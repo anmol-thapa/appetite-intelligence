@@ -11,6 +11,67 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FoodService {
+  static void updateSummaryRef(
+    Transaction transaction,
+    DocumentReference<Map<String, dynamic>> summaryRef,
+    Map<String, dynamic> payload,
+  ) {
+    int mult = payload['mult'];
+    FoodModel foodModel = payload['foodModel'];
+    double servingsMultiplier = payload['servingsMultiplier'];
+    String rating = payload['rating'];
+    String mealRatingField = payload['mealRatingField'];
+    String mealTimeCount = payload['mealTimeCount'];
+
+    transaction.update(summaryRef, {
+      'caloriesConsumed': FieldValue.increment(
+        mult *
+            Formatter.roundToInt(
+              foodModel.nitrution['calories']! * servingsMultiplier,
+            ),
+      ),
+      'macroCount.fats': FieldValue.increment(
+        mult *
+            Formatter.roundToInt(
+              foodModel.nitrution['fats']! * servingsMultiplier,
+            ),
+      ),
+      'macroCount.carbs': FieldValue.increment(
+        mult *
+            Formatter.roundToInt(
+              foodModel.nitrution['carbs']! * servingsMultiplier,
+            ),
+      ),
+      'macroCount.protein': FieldValue.increment(
+        mult *
+            Formatter.roundToInt(
+              foodModel.nitrution['protein']! * servingsMultiplier,
+            ),
+      ),
+      'mealRatingMacroCount.$rating.fats': FieldValue.increment(
+        mult *
+            Formatter.roundToInt(
+              foodModel.nitrution['fats']! * servingsMultiplier,
+            ),
+      ),
+      'mealRatingMacroCount.$rating.carbs': FieldValue.increment(
+        mult *
+            Formatter.roundToInt(
+              foodModel.nitrution['carbs']! * servingsMultiplier,
+            ),
+      ),
+      'mealRatingMacroCount.$rating.protein': FieldValue.increment(
+        mult *
+            Formatter.roundToInt(
+              foodModel.nitrution['protein']! * servingsMultiplier,
+            ),
+      ),
+      mealRatingField: FieldValue.increment(mult * 1),
+      mealTimeCount: FieldValue.increment(mult * 1),
+      'loggedFood': true,
+    });
+  }
+
   static Future<void> addFood(WidgetRef ref, FoodModel foodModel) async {
     final dateNotifier = ref.watch(dateSelectionProvider);
     String formattedDate = Formatter.dateFormat(
@@ -28,7 +89,7 @@ class FoodService {
     await DatabaseService.db.runTransaction((transaction) async {
       final summarySnap = await transaction.get(summaryRef);
       final mealDoc = mealRef.doc();
-      transaction.set(mealDoc, foodModel.toStringMap());
+      transaction.set(mealDoc, foodModel.toMap());
 
       if (!summarySnap.exists) {
         transaction.set(summaryRef, await SummaryModel.defaultMap());
@@ -42,46 +103,16 @@ class FoodService {
       String mealRatingField = 'mealRatingCount.$rating';
       String mealTimeCount = 'mealTimeCount.${foodModel.mealTime.name}';
 
-      transaction.update(summaryRef, {
-        'caloriesConsumed': FieldValue.increment(
-          Formatter.roundToInt(
-            foodModel.nitrution['calories']! * servingsMultiplier,
-          ),
-        ),
-        'macroCount.fats': FieldValue.increment(
-          Formatter.roundToInt(
-            foodModel.nitrution['fats']! * servingsMultiplier,
-          ),
-        ),
-        'macroCount.carbs': FieldValue.increment(
-          Formatter.roundToInt(
-            foodModel.nitrution['carbs']! * servingsMultiplier,
-          ),
-        ),
-        'macroCount.protein': FieldValue.increment(
-          Formatter.roundToInt(
-            foodModel.nitrution['protein']! * servingsMultiplier,
-          ),
-        ),
-        'mealRatingMacroCount.$rating.fats': FieldValue.increment(
-          Formatter.roundToInt(
-            foodModel.nitrution['fats']! * servingsMultiplier,
-          ),
-        ),
-        'mealRatingMacroCount.$rating.carbs': FieldValue.increment(
-          Formatter.roundToInt(
-            foodModel.nitrution['carbs']! * servingsMultiplier,
-          ),
-        ),
-        'mealRatingMacroCount.$rating.protein': FieldValue.increment(
-          Formatter.roundToInt(
-            foodModel.nitrution['protein']! * servingsMultiplier,
-          ),
-        ),
-        mealRatingField: FieldValue.increment(1),
-        mealTimeCount: FieldValue.increment(1),
-        'loggedFood': true,
-      });
+      Map<String, dynamic> payload = {
+        'mult': 1,
+        'foodModel': foodModel,
+        'servingsMultiplier': servingsMultiplier,
+        'rating': rating,
+        'mealRatingField': mealRatingField,
+        'mealTimeCount': mealTimeCount,
+      };
+
+      updateSummaryRef(transaction, summaryRef, payload);
     });
   }
 
@@ -126,45 +157,16 @@ class FoodService {
       String mealRatingField = 'mealRatingCount.$rating';
       String mealTimeCount = 'mealTimeCount.${foodModel.mealTime.name}';
 
-      transaction.update(summaryRef, {
-        'caloriesConsumed': FieldValue.increment(
-          -Formatter.roundToInt(
-            foodModel.nitrution['calories']! * servingsMultiplier,
-          ),
-        ),
-        'macroCount.fats': FieldValue.increment(
-          -Formatter.roundToInt(
-            foodModel.nitrution['fats']! * servingsMultiplier,
-          ),
-        ),
-        'macroCount.carbs': FieldValue.increment(
-          -Formatter.roundToInt(
-            foodModel.nitrution['carbs']! * servingsMultiplier,
-          ),
-        ),
-        'macroCount.protein': FieldValue.increment(
-          -Formatter.roundToInt(
-            foodModel.nitrution['protein']! * servingsMultiplier,
-          ),
-        ),
-        'mealRatingMacroCount.$rating.fats': FieldValue.increment(
-          -Formatter.roundToInt(
-            foodModel.nitrution['fats']! * servingsMultiplier,
-          ),
-        ),
-        'mealRatingMacroCount.$rating.carbs': FieldValue.increment(
-          -Formatter.roundToInt(
-            foodModel.nitrution['carbs']! * servingsMultiplier,
-          ),
-        ),
-        'mealRatingMacroCount.$rating.protein': FieldValue.increment(
-          -Formatter.roundToInt(
-            foodModel.nitrution['protein']! * servingsMultiplier,
-          ),
-        ),
-        mealRatingField: FieldValue.increment(-1),
-        mealTimeCount: FieldValue.increment(-1),
-      });
+      Map<String, dynamic> payload = {
+        'mult': -1,
+        'foodModel': foodModel,
+        'servingsMultiplier': servingsMultiplier,
+        'rating': rating,
+        'mealRatingField': mealRatingField,
+        'mealTimeCount': mealTimeCount,
+      };
+
+      updateSummaryRef(transaction, summaryRef, payload);
     });
   }
 }
@@ -232,7 +234,7 @@ final mealsProvider = StreamProvider<List<FoodModel>>((ref) {
       .listen((event) async {
         List<FoodModel> mealsList = List.empty(growable: true);
         for (QueryDocumentSnapshot<Map<String, dynamic>> item in event.docs) {
-          FoodModel foodModel = FoodModel.fromStringMap(item.data());
+          FoodModel foodModel = FoodModel.fromMap(item.data());
           mealsList.add(foodModel);
         }
         controller.add(mealsList);
