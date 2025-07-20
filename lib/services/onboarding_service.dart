@@ -1,7 +1,6 @@
 import 'package:appetite_intelligence/services/auth_service.dart';
 import 'package:appetite_intelligence/util/formatter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:validators/validators.dart';
 
 enum Gender { male, female }
 
@@ -133,14 +132,15 @@ class OnboardingNotifier extends StateNotifier<OnboardingService> {
 
     if (name.isEmpty || email.isEmpty || password.isEmpty) {
       return 'Please complete all fields.';
-    } else if (name.length < 2) {
-      return 'Name must be at least 2 characters long!';
-    } else if (name.length > 15) {
-      return 'Name must be less than 15 characters long!';
-    } else if (!isEmail(email)) {
-      return 'The email is not valid.';
-    } else if (password.length < 6 || !isAscii(password)) {
-      return 'The password must be at least 6 characters long and use only valid characters.';
+    } else {
+      String? nameValid = AuthService.validateName(name);
+      if (nameValid != null) return nameValid;
+
+      String? emailValid = AuthService.validateEmail(email);
+      if (emailValid != null) return emailValid;
+
+      String? passwordValid = AuthService.validatePassword(password);
+      if (passwordValid != null) return passwordValid;
     }
     return null;
   }

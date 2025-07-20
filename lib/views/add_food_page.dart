@@ -4,6 +4,7 @@ import 'package:appetite_intelligence/services/food_service.dart';
 import 'package:appetite_intelligence/services/ui_service.dart';
 import 'package:appetite_intelligence/util/text_util.dart';
 import 'package:appetite_intelligence/widgets/reusables/card_widget.dart';
+import 'package:appetite_intelligence/widgets/reusables/drop_down_widget.dart';
 import 'package:appetite_intelligence/widgets/reusables/food_data_text_field_widget.dart';
 import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:flutter/material.dart';
@@ -300,50 +301,30 @@ class _AddFoodPageState extends ConsumerState<AddFoodPage> {
                           ],
                         ),
                         const SizedBox(height: 8),
-                        Container(
-                          decoration: BoxDecoration(
-                            color:
-                                Theme.of(
-                                  context,
-                                ).colorScheme.surfaceContainerHighest,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<HealthRating>(
-                              value: selectedRating,
-                              icon: const Icon(Icons.arrow_drop_down),
-                              isExpanded: true,
-                              borderRadius: BorderRadius.circular(12),
-                              style: Theme.of(context).textTheme.bodyMedium,
-                              items: [
-                                if (selectedRating == null)
-                                  const DropdownMenuItem<HealthRating>(
-                                    enabled: false,
-                                    value: null,
-                                    child: Text(
-                                      "Select rating...",
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
+                        DropDownWidget<HealthRating>(
+                          label: 'Health Rating',
+                          value: selectedRating,
+                          hint: 'Select rating...',
+                          width:
+                              200, // Optional: adjust or remove for full width
+                          onChanged: (value) {
+                            if (value != null) {
+                              setState(() => selectedRating = value);
+                            }
+                          },
+                          items:
+                              HealthRating.values.map((rating) {
+                                final label =
+                                    rating.name[0].toUpperCase() +
+                                    rating.name.substring(1);
+                                return DropdownMenuItem(
+                                  value: rating,
+                                  child: Text(
+                                    label,
+                                    style: const TextStyle(fontSize: 15),
                                   ),
-                                ...HealthRating.values.map((rating) {
-                                  return DropdownMenuItem(
-                                    value: rating,
-                                    child: Text(
-                                      rating.name[0].toUpperCase() +
-                                          rating.name.substring(1),
-                                      style: const TextStyle(fontSize: 15),
-                                    ),
-                                  );
-                                }),
-                              ],
-                              onChanged: (value) {
-                                if (value != null) {
-                                  setState(() => selectedRating = value);
-                                }
-                              },
-                            ),
-                          ),
+                                );
+                              }).toList(),
                         ),
                       ],
                     ),

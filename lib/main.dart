@@ -69,8 +69,11 @@ class MainApp extends ConsumerWidget {
         GoRoute(
           path: '/settings',
           builder:
-              (context, state) =>
-                  BaseScaffoldPage(showAppBar: true, child: SettingsPage()),
+              (context, state) => BaseScaffoldPage(
+                showAppBar: true,
+                scroll: true,
+                child: SettingsPage(),
+              ),
         ),
         GoRoute(
           path: '/meal-add/:mealTime',

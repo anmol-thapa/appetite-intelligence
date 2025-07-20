@@ -1,5 +1,6 @@
 import 'package:appetite_intelligence/data/constants.dart';
 import 'package:appetite_intelligence/widgets/reusables/primary_button_widget.dart';
+import 'package:appetite_intelligence/widgets/reusables/secondary_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
@@ -111,17 +112,9 @@ class _WelcomePageState extends State<WelcomePage>
                   onClick: () => context.push('/onboarding/1'),
                   text: 'Get Started',
                 ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                    ),
-                  ),
-                  onPressed: () => context.push('/login'),
-                  child: Text(
-                    'Login',
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
+                SecondaryButton(
+                  onClick: () => context.push('/login'),
+                  text: 'Login',
                 ),
               ],
             ),

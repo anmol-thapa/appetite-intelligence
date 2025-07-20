@@ -16,6 +16,7 @@ class KColors {
 
 class KPageSettings {
   static const EdgeInsets pagePadding = EdgeInsets.all(24);
+  static const TextStyle semiBold = TextStyle(fontWeight: FontWeight.w600);
 }
 
 class KAnimation {

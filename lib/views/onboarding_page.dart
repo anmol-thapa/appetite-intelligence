@@ -423,6 +423,7 @@ class _OnBoardingPage5State extends ConsumerState<OnBoardingPage5> {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Text(
             "Pick your cheat meal days",
