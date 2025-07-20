@@ -78,7 +78,7 @@ class ScannedFoodModel {
         predictedHealthRating = HealthRating.healthy;
         break;
       case 'c':
-        predictedHealthRating = HealthRating.netural;
+        predictedHealthRating = HealthRating.neutral;
         break;
       case 'd':
       case 'e':

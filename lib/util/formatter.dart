@@ -31,6 +31,6 @@ class Formatter {
   static int roundToInt(num value) {
     if (value is int) return value;
 
-    return value.round().toInt();
+    return value.round();
   }
 }

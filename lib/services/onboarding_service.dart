@@ -135,6 +135,8 @@ class OnboardingNotifier extends StateNotifier<OnboardingService> {
       return 'Please complete all fields.';
     } else if (name.length < 2) {
       return 'Name must be at least 2 characters long!';
+    } else if (name.length > 15) {
+      return 'Name must be less than 15 characters long!';
     } else if (!isEmail(email)) {
       return 'The email is not valid.';
     } else if (password.length < 6 || !isAscii(password)) {

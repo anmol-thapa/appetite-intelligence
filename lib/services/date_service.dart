@@ -26,6 +26,11 @@ class DateService {
     }
   }
 
+  static Future<DateTime> getNetworkTimeOrNow() async {
+    DateTime? networkTime = await getNetworkTime();
+    return networkTime ?? DateTime.now();
+  }
+
   static Future<Duration?> getNetworkDifference(DateTime dateTime) async {
     DateTime now;
     try {
@@ -43,7 +48,7 @@ class DateSelectionNotifier extends StateNotifier<DateService> {
 
   // Allow up to the current day in current date selection
   Future<void> incrementDay() async {
-    final networkNow = await DateService.getNetworkTime() ?? DateTime.now();
+    final networkNow = await DateService.getNetworkTimeOrNow();
 
     if (Formatter.dateFormat(date: state.currentDateSelection) !=
         Formatter.dateFormat(date: networkNow)) {
@@ -53,7 +58,7 @@ class DateSelectionNotifier extends StateNotifier<DateService> {
 
   /// Allow up to 6 days back in current date selection
   Future<void> decrementDay() async {
-    final networkNow = await DateService.getNetworkTime() ?? DateTime.now();
+    final networkNow = await DateService.getNetworkTimeOrNow();
 
     Duration difference = state.currentDateSelection.difference(networkNow);
 
@@ -69,9 +74,7 @@ class DateSelectionNotifier extends StateNotifier<DateService> {
   /// Attempts to sync the time.
   /// If there is an error, such as no network connection, it will set the device's time.
   Future<void> sync() async {
-    state = state.set(
-      dateTime: await DateService.getNetworkTime() ?? DateTime.now(),
-    );
+    state = state.set(dateTime: await DateService.getNetworkTimeOrNow());
   }
 
   bool isCheatDay(WidgetRef ref) {
@@ -87,5 +90,5 @@ final dateSelectionProvider =
     );
 
 final networkTimeProvider = FutureProvider<DateTime>((ref) async {
-  return await DateService.getNetworkTime() ?? DateTime.now();
+  return await DateService.getNetworkTimeOrNow();
 });

@@ -35,6 +35,7 @@ class MainApp extends ConsumerWidget {
       redirect: (context, state) {
         final userAsync = ref.watch(firebaseUser);
 
+        // Don't redirect in login/welcome/onboarding pages
         final isLoggingOrSigningUp = RegExp(
           r'^/(login|welcome|onboarding)(/.*)?$',
         ).hasMatch(state.matchedLocation);

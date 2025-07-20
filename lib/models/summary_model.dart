@@ -40,10 +40,10 @@ class SummaryModel {
         'carbs': goals['carbs'] ?? 0,
         'protein': goals['protein'] ?? 0,
       },
-      'mealRatingCount': {'healthy': 0, 'netural': 0, 'junk': 0},
+      'mealRatingCount': {'healthy': 0, 'neutral': 0, 'junk': 0},
       'mealRatingMacroCount': {
         'healthy': {'fats': 0, 'carbs': 0, 'protein': 0},
-        'netural': {'fats': 0, 'carbs': 0, 'protein': 0},
+        'neutral': {'fats': 0, 'carbs': 0, 'protein': 0},
         'junk': {'fats': 0, 'carbs': 0, 'protein': 0},
       },
       'mealTimeCount': {'breakfast': 0, 'lunch': 0, 'dinner': 0},
@@ -81,12 +81,12 @@ class SummaryModel {
       ]),
       mealRatingCount: fallbackMap(data['mealRatingCount'], [
         'healthy',
-        'netural',
+        'neutral',
         'junk',
       ]),
       mealRatingMacroCount: fallbackNestedMap(
         data['mealRatingMacroCount'],
-        ['healthy', 'netural', 'junk'],
+        ['healthy', 'neutral', 'junk'],
         ['fats', 'carbs', 'protein'],
       ),
       mealTimeCount: fallbackMap(data['mealTimeCount'], [

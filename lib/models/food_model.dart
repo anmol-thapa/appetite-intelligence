@@ -1,6 +1,6 @@
 enum MealTime { breakfast, lunch, dinner }
 
-enum HealthRating { healthy, netural, junk }
+enum HealthRating { healthy, neutral, junk }
 
 class FoodModel {
   final String name;
@@ -20,7 +20,7 @@ class FoodModel {
   });
 
   // Convert from JSON string to Object
-  factory FoodModel.fromStringMap(Map<String, dynamic> data) {
+  factory FoodModel.fromMap(Map<String, dynamic> data) {
     return FoodModel(
       name: data['name'],
       nitrution: Map.from(data['nitrution']),
@@ -32,7 +32,7 @@ class FoodModel {
   }
 
   // Convert from Object to JSON String
-  Map<String, dynamic> toStringMap() => {
+  Map<String, dynamic> toMap() => {
     'name': name,
     'nitrution': nitrution,
     'mealTime': mealTime.name,

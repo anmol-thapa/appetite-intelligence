@@ -68,7 +68,7 @@ class PieChartWidget extends StatelessWidget {
   }) {
     colors ??= [
       KColors.proteinColor,
-      KColors.neturalColor,
+      KColors.neutralColor,
       KColors.primaryNegative,
     ];
     return List.generate(values.length, (i) {

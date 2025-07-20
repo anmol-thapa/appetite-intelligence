@@ -61,12 +61,12 @@ class _AnalysisPageState extends ConsumerState<AnalysisPage> {
     for (final doc in docs) {
       final ratingCounts = doc['mealRatingCount'] ?? {};
       healthyCount += (ratingCounts['healthy'] ?? 0) as int;
-      neutralCount += (ratingCounts['netural'] ?? 0) as int;
+      neutralCount += (ratingCounts['neutral'] ?? 0) as int;
       junkCount += (ratingCounts['junk'] ?? 0) as int;
 
       final macroRatings = doc['mealRatingMacroCount'] ?? {};
       final healthyMacros = macroRatings['healthy'] ?? {};
-      final neutralMacros = macroRatings['netural'] ?? {};
+      final neutralMacros = macroRatings['neutral'] ?? {};
       final junkMacros = macroRatings['junk'] ?? {};
 
       fatHealthy += (healthyMacros['fats'] ?? 0) as int;
@@ -239,7 +239,7 @@ class _LegendRow extends StatelessWidget {
       children: [
         _legendItem(color: KColors.primaryColor, label: 'Healthy'),
         SizedBox(width: 8),
-        _legendItem(color: KColors.neturalColor, label: 'Neutral'),
+        _legendItem(color: KColors.neutralColor, label: 'Neutral'),
         SizedBox(width: 8),
         _legendItem(color: KColors.primaryNegative, label: 'Junk'),
       ],

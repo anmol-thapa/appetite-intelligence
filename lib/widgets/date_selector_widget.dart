@@ -30,7 +30,7 @@ class DateSelectorWidget extends ConsumerWidget {
 
     String displayedDate =
         isToday ? 'Today' : Formatter.dateFormat(date: selectedDate);
-    displayedDate += isCheatDay ? '- Cheat Day!' : '';
+    displayedDate += isCheatDay ? ' - Cheat Day!' : '';
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -35,7 +35,7 @@ class FoodItemWidget extends ConsumerWidget {
     if (healthRating == HealthRating.healthy) {
       healthIcon = Icons.eco;
       color = KColors.primaryColor;
-    } else if (healthRating == HealthRating.netural) {
+    } else if (healthRating == HealthRating.neutral) {
       healthIcon = Icons.horizontal_rule;
       color = KColors.primaryCaution;
     } else if (healthRating == HealthRating.junk) {

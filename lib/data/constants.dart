@@ -11,7 +11,7 @@ class KColors {
   static const Color proteinColor = KColors.primaryColor;
   static const Color carbsColor = Color.fromARGB(255, 254, 137, 74);
   static const Color fatsColor = Color.fromARGB(255, 254, 191, 74);
-  static const Color neturalColor = Color(0xFF8EAEDC);
+  static const Color neutralColor = Color(0xFF8EAEDC);
 }
 
 class KPageSettings {
